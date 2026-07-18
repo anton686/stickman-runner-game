@@ -2,13 +2,28 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="description" content="Беги от полицейских! Собирай монеты и используй способности!">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Stickman Runner">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23667eea' width='192' height='192'/><text x='96' y='140' font-size='120' text-anchor='middle' fill='white' font-weight='bold'>🏃</text></svg>">
+    
     <title>Stickman Runner Game</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
@@ -20,6 +35,9 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             font-family: Arial, sans-serif;
             overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
 
         #gameContainer {
@@ -34,6 +52,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 100%);
+            touch-action: none;
         }
 
         #ui {
@@ -47,17 +66,9 @@
             z-index: 100;
         }
 
-        #score {
-            margin-bottom: 10px;
-        }
-
-        #timer {
-            margin-bottom: 10px;
-        }
-
         #coins {
             color: #FFD700;
-            margin-bottom: 20px;
+            margin: 10px 0;
         }
 
         #abilities {
@@ -68,7 +79,6 @@
             gap: 10px;
             z-index: 100;
             flex-wrap: wrap;
-            max-width: 250px;
         }
 
         .ability-btn {
@@ -87,11 +97,12 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .ability-btn:hover:not(.disabled) {
+        .ability-btn:active:not(.disabled) {
             background: rgba(0, 0, 0, 0.7);
-            transform: scale(1.1);
+            transform: scale(0.95);
         }
 
         .ability-btn.disabled {
@@ -148,38 +159,19 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .game-over-content button:hover {
+        .game-over-content button:active {
             background: #45a049;
-            transform: scale(1.1);
-        }
-
-        #mobileTouchPad {
-            position: absolute;
-            bottom: 110px;
-            right: 20px;
-            width: 150px;
-            height: 150px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 3px solid white;
-            border-radius: 50%;
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #touchIndicator {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
+            transform: scale(0.95);
         }
 
         @media (max-width: 600px) {
             #ui {
                 font-size: 18px;
+                top: 10px;
+                left: 10px;
             }
             
             .ability-btn {
@@ -203,9 +195,6 @@
             <button class="ability-btn" id="abilityFly" title="Полёт (W)">🕊️<br>Полёт</button>
             <button class="ability-btn" id="abilityStun" title="Силач (E)">💪<br>Силач</button>
         </div>
-        <div id="mobileTouchPad">
-            <div id="touchIndicator"></div>
-        </div>
         <div id="gameOverScreen">
             <div class="game-over-content">
                 <h1>GAME OVER!</h1>
@@ -217,5 +206,12 @@
     </div>
 
     <script src="game.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('✅ Service Worker зарегистрирован'))
+                .catch(err => console.log('❌ Service Worker ошибка:', err));
+        }
+    </script>
 </body>
 </html>
